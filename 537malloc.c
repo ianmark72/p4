@@ -7,10 +7,10 @@ typedef struct tuple {
 } tuple;
 
 void malloc537(size_t size) {
-        tuple* memInfo = malloc(sizeof(tuple));
+        tuple* tuple = malloc(sizeof(tuple));
 
-        memInfo->address = malloc(size);
-        memInfo->length = size;
+        tuple->address = malloc(size);
+        tuple->length = size;
 }
 
 void free537(void *ptr) {
@@ -31,8 +31,11 @@ void realloc537(void *ptr, size_t size) {
 		}else{
 			free537(ptr);
 		}
-	}else if(){
-		realloc(ptr, size);
+	}else {
+		tuple* tuple = malloc(sizeof(tuple));
+
+		tuple->address = realloc(ptr, size);
+		tuple->length = size;
 	}
 }
 
