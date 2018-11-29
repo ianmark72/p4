@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "537malloc.h"
 
 typedef struct node {
     tuple* tuple;
