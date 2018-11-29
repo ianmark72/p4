@@ -1,11 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "tree.h"
+#include "structs.h"
 
-typedef struct tuple {
-        int* address;
-        int length;
-} tuple;
 
 void malloc537(size_t size) {
         tuple* tuple = malloc(sizeof(tuple));
