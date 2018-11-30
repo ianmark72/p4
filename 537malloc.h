@@ -1,10 +1,6 @@
 #ifndef MALLOC_H
 #define MALLOC_H
 
-typedef struct tuple {
-        int* address;
-        int length;
-} tuple;
 
 void malloc537(size_t size);
 void free537(void *ptr);
