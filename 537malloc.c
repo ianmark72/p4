@@ -24,9 +24,9 @@ void * malloc537(size_t size) {
 }
 
 static node* findNode(void* ptr, node* node) {
-	node* matchingNode = NULL;
+	struct node* matchingNode = NULL;
 
-	if(ptr == node->address) {
+	if(ptr == node->tuple->address) {
 		matchingNode = node;
 	}else{
 		if(node->left != NULL) {
@@ -69,9 +69,7 @@ void free537(void *ptr) {
 }
 
 void memcheck537(void *ptr, size_t size) {
-	if() {
-
-	}
+	
 }
 
 void * realloc537(void *ptr, size_t size) {
