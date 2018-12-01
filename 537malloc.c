@@ -11,14 +11,15 @@ void * malloc537(size_t size) {
         tuple* tuple = malloc(sizeof(*tuple));
         tuple->address = malloc(size);
         tuple->length = size;
-
+		printf("New Tuple: ");
+		printf("%p \n",tuple->address);
 		//printf("tuple created\n");
 		if(root != NULL) {
-			addNode(root, tuple);
+			 addNode(root, tuple);
 		}else{
 			root = addNode(NULL, tuple);
 		}
-		//printf("End of malloc537\n");
+		root = findRoot(root);
 		return tuple->address;
 }
 
@@ -51,6 +52,7 @@ void * realloc537(void *ptr, size_t size) {
 }
  
 void printNode(node* node){ 
+	printf("========================================\n");
 	printf("Address: %p\n",node->tuple->address);
 	printf("Length: %li\n", node->tuple->length);
 	printf("Color: %i\n", node->color);
@@ -88,10 +90,9 @@ int main() {
 	//printf("Start\n");
 	malloc537(40);
 	malloc537(40);
-	malloc537(25);
-	malloc537(30);
-	malloc537(69);
-
+	malloc537(40);
+	malloc537(40);
+	
 	//Test Printing 
 	printNode(root);
 }

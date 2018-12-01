@@ -8,7 +8,7 @@ typedef struct tuple {
 
 typedef struct node {
     struct tuple* tuple;
-    int color;
+    int color; //0 is black, 1 is red
     struct node* left;
     struct node* right;
     struct node* parent;

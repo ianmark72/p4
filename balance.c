@@ -16,6 +16,9 @@ int checkSide(node* child, node* parent) {
 
 	return returnValue;
 }
+void recolor(node* parent, node* uncle, node* grandparent){
+        
+}
 
 void leftleftcase(node* parent, node* grandparent) {
 	if(grandparent->parent != NULL) {
@@ -37,22 +40,30 @@ void leftrightcase(node* child, node* parent, node* grandparent) {
 
 	parent->right = NULL;
 	parent->parent = child;
-
+        
 	leftleftcase(child, grandparent);
 }
 
-void rightrightcase(node* parent, node* grandparent) {
+void rightrightcase(node* parent, node* uncle, node* grandparent) {
+        if (uncle == NULL || uncle->color == 0) {
 	if(grandparent->parent != NULL) {
                 parent->parent = grandparent->parent;
+                grandparent->parent = parent;
         }else{
+                grandparent->parent = parent;
                 parent->parent = NULL;
         }
 	parent->left = grandparent;
         parent->color = 0;
 
-        grandparent->parent = parent;
 	grandparent->right = NULL;
         grandparent->color = 1;
+        }
+        else { // uncle is red
+        uncle->color = 0;
+        parent->color = 0;
+        grandparent->color = 1;
+        }
 }
 
 void rightleftcase(node* child, node* parent, node* grandparent) {
@@ -62,40 +73,30 @@ void rightleftcase(node* child, node* parent, node* grandparent) {
         parent->left = NULL;
         parent->parent = child;
 
-        rightrightcase(child, grandparent);
+       // rightrightcase(child, grandparent);
 }
 
 void balanceTree(node* newNode, node* uncle, int path){
 	//Path 0 = left-left, 1 = left-right, 2 = right-left, 3 = right-right 
 
 	//Check if uncle exists.
-	if(uncle != NULL) {
-		if(uncle->color == 0) {
 			//Uncle is black
 			switch(path) {
 			case 0:
 				leftleftcase(newNode->parent, newNode->parent->parent);
 				break;
 			case 1:
+                                printf("Case: Left Right ");
+                                printf("%p \n",newNode->tuple->address);
 				leftrightcase(newNode, newNode->parent, newNode->parent->parent);
 				break;
 			case 2:
 				rightleftcase(newNode, newNode->parent, newNode->parent->parent);
 				break;
 			case 3:
-				rightrightcase(newNode->parent, newNode->parent->parent);
+                                printf("Case: Right Right ");
+                                printf("%p \n",newNode->tuple->address);
+				rightrightcase(newNode->parent, uncle, newNode->parent->parent);
 				break;
 			}
-		}else{
-			//Uncle is red
-			if(newNode->parent->color == 1){
-				newNode->parent->color = 0;
-			}	
-			uncle->color = 0;
-
-			// if(newNode->parent->parent != rootNode) {
-			// 	newNode->parent->parent->color = 1; 
-			// }
-		}
 	}
-}

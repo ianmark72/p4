@@ -6,6 +6,7 @@
 
 
 node* addNode(node* node, struct tuple* tuple);
+node* findRoot(node* node);
 
 #endif /* TREE_H */
 
