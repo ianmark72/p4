@@ -3,8 +3,9 @@
 
 typedef struct tuple {
         int* address;
-        int length;
+        size_t length;
 } tuple;
+
 typedef struct node {
     struct tuple* tuple;
     int color;
@@ -13,7 +14,5 @@ typedef struct node {
     struct node* parent;
     int status;
 } node;
-typedef struct rootNode {
-    node* root;
-} rootNode;
+
 #endif /* STRUCTS_H */
