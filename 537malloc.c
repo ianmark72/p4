@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "tree.h"
 #include "structs.h"
 
@@ -9,9 +10,6 @@ void * malloc537(size_t size) {
 		//printf("inside malloc\n");
         tuple* tuple = malloc(sizeof(*tuple));
         tuple->address = malloc(size);
-		printf("%li\n", sizeof(*tuple));
-		printf("%li\n", sizeof(int*));
-		printf("%li\n", sizeof(size_t));
         tuple->length = size;
 
 		//printf("tuple created\n");
@@ -51,23 +49,32 @@ void * realloc537(void *ptr, size_t size) {
 
 	return NULL;
 }
-
+ 
 void printNode(node* node){ 
-	printf("Address: %i\n", node->tuple->address);
-	printf("Length: %i\n", node->tuple->length);
+	printf("Address: %p\n",node->tuple->address);
+	printf("Length: %li\n", node->tuple->length);
 	printf("Color: %i\n", node->color);
 	printf("Status: %i\n", node->status);
 
 	if(node->parent != NULL){
-		printf("Parent's Address: %i\n", node->parent->tuple->address);
+		printf("Parent's Address: %p\n", node->parent->tuple->address);
+	}
+	else {
+		printf("Parent's Address: NULL\n");
 	}
 	if(node->left != NULL) {
-		printf("Left Address: %i\n", node->left->tuple->address);
+		printf("Left Address: %p\n", node->left->tuple->address);
 	}
+	else {
+                printf("Left Address: NULL\n");
+        }
 	if(node->right != NULL) {
-		printf("Right Address: %i\n", node->right->tuple->address);
+		printf("Right Address: %p\n", node->right->tuple->address);
 	}
-
+	else {
+                printf("Right Address: NULL\n");
+        }
+	printf("========================================\n");
 	if(node->left != NULL) {
 		printNode(node->left);
 	}
@@ -80,6 +87,10 @@ void printNode(node* node){
 int main() {
 	//printf("Start\n");
 	malloc537(40);
+	malloc537(40);
+	malloc537(25);
+	malloc537(30);
+	malloc537(69);
 
 	//Test Printing 
 	printNode(root);
