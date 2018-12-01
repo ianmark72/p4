@@ -68,7 +68,22 @@ void rightleftcase(node* child, node* parent, node* grandparent) {
 
 void balanceTree(node* newNode, int path){
 	//Path 0 = left-left, 1 = left-right, 2 = right-left, 3 = right-right 
-        while(newNode->parent != NULL && newNode->parent->color != 1) {
+        int flag = -1;
+        if (newNode->parent != NULL) {
+                flag = 1; // not null;
+        } else {
+                flag = 0; // null
+        }
+        printf("========================================\n");
+        printf("Balance Loop Conditions: ");
+        printf("Node Address: %p \n",newNode->tuple->address);
+        if(flag == 0) {
+                printf("Parent is null, and color is %i \n",newNode->parent->color);
+        } else if(flag == 1){
+                printf("Parent is not null, and color is %i \n",newNode->parent->color);
+        }
+        printf("========================================\n");
+        while(newNode->parent != NULL && newNode->parent->color == 1) {
 	//Check if uncle exists.
                 struct node* uncle;
                 if(newNode->parent == newNode->parent->parent->left){
@@ -79,7 +94,7 @@ void balanceTree(node* newNode, int path){
                 }
                 //Case: Recoloring
                 //Change color of parent and uncle to black and grandparent to red, move newnode to grandparent
-                if(uncle->color == 1) {
+                if(uncle->color == 1 ) {
                         uncle->color = 0;
                         newNode->color = 0;
                         newNode->parent->parent->color = 1;
