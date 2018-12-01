@@ -16,9 +16,6 @@ int checkSide(node* child, node* parent) {
 
 	return returnValue;
 }
-void recolor(node* parent, node* uncle, node* grandparent){
-        
-}
 
 void leftleftcase(node* parent, node* grandparent) {
 	if(grandparent->parent != NULL) {
@@ -44,8 +41,7 @@ void leftrightcase(node* child, node* parent, node* grandparent) {
 	leftleftcase(child, grandparent);
 }
 
-void rightrightcase(node* parent, node* uncle, node* grandparent) {
-        if (uncle == NULL || uncle->color == 0) {
+void rightrightcase(node* parent, node* grandparent) {     
 	if(grandparent->parent != NULL) {
                 parent->parent = grandparent->parent;
                 grandparent->parent = parent;
@@ -59,12 +55,6 @@ void rightrightcase(node* parent, node* uncle, node* grandparent) {
 	grandparent->right = NULL;
         grandparent->color = 1;
         }
-        else { // uncle is red
-        uncle->color = 0;
-        parent->color = 0;
-        grandparent->color = 1;
-        }
-}
 
 void rightleftcase(node* child, node* parent, node* grandparent) {
 	grandparent->right = child;
@@ -73,16 +63,33 @@ void rightleftcase(node* child, node* parent, node* grandparent) {
         parent->left = NULL;
         parent->parent = child;
 
-       // rightrightcase(child, grandparent);
+        rightrightcase(child, grandparent);
 }
 
-void balanceTree(node* newNode, node* uncle, int path){
+void balanceTree(node* newNode, int path){
 	//Path 0 = left-left, 1 = left-right, 2 = right-left, 3 = right-right 
-
+        while(newNode->parent != NULL && newNode->parent->color != 1) {
 	//Check if uncle exists.
-			//Uncle is black
+                struct node* uncle;
+                if(newNode->parent == newNode->parent->parent->left){
+                        uncle = newNode->parent->parent->right;
+                }
+                else {
+                        uncle = newNode->parent->left;
+                }
+                //Case: Recoloring
+                //Change color of parent and uncle to black and grandparent to red, move newnode to grandparent
+                if(uncle->color == 1) {
+                        uncle->color = 0;
+                        newNode->color = 0;
+                        newNode->parent->parent->color = 1;
+                        newNode = newNode->parent->parent;
+                }else{
+                	//Uncle is black
 			switch(path) {
 			case 0:
+                                printf("Case: Left Left ");
+                                printf("%p \n",newNode->tuple->address);
 				leftleftcase(newNode->parent, newNode->parent->parent);
 				break;
 			case 1:
@@ -91,12 +98,16 @@ void balanceTree(node* newNode, node* uncle, int path){
 				leftrightcase(newNode, newNode->parent, newNode->parent->parent);
 				break;
 			case 2:
+                                printf("Case: Right Left ");
+                                printf("%p \n",newNode->tuple->address);
 				rightleftcase(newNode, newNode->parent, newNode->parent->parent);
 				break;
 			case 3:
                                 printf("Case: Right Right ");
                                 printf("%p \n",newNode->tuple->address);
-				rightrightcase(newNode->parent, uncle, newNode->parent->parent);
+				rightrightcase(newNode->parent, newNode->parent->parent);
 				break;
 			}
+                }
+        }
 	}

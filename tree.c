@@ -22,10 +22,10 @@ node* addNode(node* node, tuple* tuple) {
 				newNode->status = 1;
 				if (node->parent != NULL){
 					if(node->parent->tuple->address > node->tuple->address){
-						balanceTree(newNode, node->parent->right,0);
+						balanceTree(newNode, 0);
 					}
 					else {
-						balanceTree(newNode, node->parent->left,2);
+						balanceTree(newNode, 2);
 					}
 				}
 			}else{
@@ -43,11 +43,11 @@ node* addNode(node* node, tuple* tuple) {
 				newNode->status = 1;
 				if (node->parent != NULL) {
 					if(node->parent->tuple->address > node->tuple->address){
-						balanceTree(newNode, node->left,1);
+						balanceTree(newNode, 1);
 						//printf("%p ",newNode->tuple->address);
 					}
 					else {
-						balanceTree(newNode, node->left,3);
+						balanceTree(newNode, 3);
 						// printf("%p ",newNode->tuple->address);
 					}
 				}
