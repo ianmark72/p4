@@ -94,11 +94,37 @@ void balanceTree(node* newNode, int path){
                 }
                 //Case: Recoloring
                 //Change color of parent and uncle to black and grandparent to red, move newnode to grandparent
-                if(uncle->color == 1 ) {
-                        uncle->color = 0;
-                        newNode->color = 0;
-                        newNode->parent->parent->color = 1;
-                        newNode = newNode->parent->parent;
+                if(uncle != NULL) {
+			if(uncle->color == 1) {
+				uncle->color = 0;
+				newNode->color = 0;
+				newNode->parent->parent->color = 1;
+				newNode = newNode->parent->parent;
+			}else{
+				//Uncle is black
+				switch(path) {
+				case 0:
+					printf("Case: Left Left ");
+					printf("%p \n",newNode->tuple->address);
+					leftleftcase(newNode->parent, newNode->parent->parent);
+					break;
+				case 1:
+					printf("Case: Left Right ");
+					printf("%p \n",newNode->tuple->address);
+					leftrightcase(newNode, newNode->parent, newNode->parent->parent);
+					break;
+				case 2:
+					printf("Case: Right Left ");
+					printf("%p \n",newNode->tuple->address);
+					rightleftcase(newNode, newNode->parent, newNode->parent->parent);
+					break;
+				case 3:
+					printf("Case: Right Right ");
+					printf("%p \n",newNode->tuple->address);
+					rightrightcase(newNode->parent, newNode->parent->parent);
+					break;
+				}
+			}
                 }else{
                 	//Uncle is black
 			switch(path) {
