@@ -9,6 +9,8 @@ void malloc537(size_t size) {
 
         tuple->address = malloc(size);
         tuple->length = size;
+
+		return tuple->address;
 }
 
 void free537(void *ptr) {

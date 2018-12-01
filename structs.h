@@ -11,7 +11,7 @@ typedef struct node {
     struct node* left;
     struct node* right;
     struct node* parent;
-    int status;
+    int status; //1 if allocated, 0 means free
 } node;
 typedef struct rootNode {
     node* root;
