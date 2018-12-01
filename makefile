@@ -14,9 +14,9 @@ SCAN_BUILD_DIR = scan-build-out
 all: 537malloc.o tree.o
 	$(CC) -o $(EXE) 537malloc.o tree.o
 
-537malloc.o: 537malloc.c 537malloc.h tree.h
+537malloc.o: 537malloc.c 537malloc.h tree.h structs.h
 	$(CC) $(WARNING_FLAGS) -c -g 537malloc.c
-tree.o: tree.c tree.h
+tree.o: tree.c tree.h structs.h
 	$(CC) $(WARNING_FLAGS) -c -g tree.c
 
 clean:

@@ -5,8 +5,7 @@
 #include "structs.h"
 
 
-void addNode(node* node, struct tuple* tuple);
-rootNode* createTree(struct tuple* tuple); 
+node* addNode(node* node, struct tuple* tuple);
 
 #endif /* TREE_H */
 

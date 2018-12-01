@@ -4,50 +4,49 @@
 #include "structs.h"
 
 
-void addNode(node* node, tuple* tuple) {
+node* addNode(node* node, tuple* tuple) {
+	struct node* newNode = malloc(sizeof(node));
 
-	if(node->tuple->address > tuple->address) {
-		//Left
-		if(node->left == NULL) {
-            struct node *newNode = calloc(1, sizeof(node));
-			newNode->color = 0;
-			newNode->parent = node;
-			newNode->left = NULL;
-			newNode->right = NULL;
-			newNode->tuple = tuple;
-			node->left = newNode;
-		}else{
-			addNode(node->left, tuple);
+	if(node != NULL) {
+		if(node->tuple->address > tuple->address) {
+			//Left
+			if(node->left == NULL) {
+
+				newNode->color = 0;
+				newNode->parent = node;
+				newNode->left = NULL;
+				newNode->right = NULL;
+				newNode->tuple = tuple;
+				node->left = newNode;
+				newNode->status = 1;
+			}else{
+				addNode(node->left, tuple);
+			}
+		}else if(node->tuple->address <= tuple->address) {
+			//Right
+			if(node->right == NULL) {
+                newNode->color = 0;
+                newNode->parent = node;
+                newNode->left = NULL;
+                newNode->right = NULL;
+                newNode->tuple = tuple;
+                node->right = newNode;
+				newNode->status = 1;
+			}else{
+				addNode(node->right, tuple);
+			}
 		}
-	}else if(node->tuple->address <= tuple->address) {
-		//Right
-		if(node->right == NULL) {
-			struct node* newNode = calloc(1, sizeof(node));
-                        newNode->color = 0;
-                        newNode->parent = node;
-                        newNode->left = NULL;
-                        newNode->right = NULL;
-                        newNode->tuple = tuple;
-                        node->right = newNode;
-		}else{
-			addNode(node->right, tuple);
-		}
+	} else {
+		//Root Node
+		newNode->color = 0;
+		//newNode->parent = NULL;
+		//newNode->left = NULL;
+		//newNode->right = NULL;
+		newNode->tuple = tuple;
+		newNode->status = 1;
 	}
-}
-
-rootNode* createTree(tuple* tuple) {
-    node *firstNode;
-    firstNode = calloc(sizeof(node), 1);
-    firstNode->color = 0;
-    firstNode->left = NULL;
-    firstNode->right = NULL;
-    firstNode->parent = NULL;
-    firstNode->tuple = tuple;
-    firstNode->status = 0;
-
-    rootNode *root = calloc(sizeof(rootNode), 1);
-    root->root = firstNode;
-    return root;
+	
+	return newNode;
 }
 
 int checkSide(node* child, node* parent) {

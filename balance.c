@@ -83,13 +83,8 @@ void balanceTree(node* rootNode) {
 
     /* Case : B 
            //Rotation needed
-
         
-        /* Case : 2 
-                   pt is right child of its parent 
-                   Left-rotation required */
-        
-        /* Case : 3 
+        /* Case : 1 
                    pt is left child of its parent 
                    Right-rotation required */
         /* Case : 2 
@@ -97,6 +92,9 @@ void balanceTree(node* rootNode) {
                    Right-rotation required */
         
          /* Case : 3 
+                   pt is right child of its parent 
+                   Left-rotation required */
+         /* Case : 4 
                    pt is right child of its parent 
                    Left-rotation required */
 
