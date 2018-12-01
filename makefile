@@ -11,13 +11,15 @@ WARNING_FLAGS = -Wall -Wextra
 EXE = 537malloc
 SCAN_BUILD_DIR = scan-build-out
 
-all: 537malloc.o tree.o
-	$(CC) -o $(EXE) 537malloc.o tree.o
+all: 537malloc.o tree.o balance.o
+	$(CC) -o $(EXE) 537malloc.o tree.o balance.o
 
-537malloc.o: 537malloc.c 537malloc.h tree.h structs.h
+537malloc.o: 537malloc.c 537malloc.h tree.h structs.h balance.h
 	$(CC) $(WARNING_FLAGS) -c -g 537malloc.c
-tree.o: tree.c tree.h structs.h
+tree.o: tree.c tree.h structs.h balance.h
 	$(CC) $(WARNING_FLAGS) -c -g tree.c
+balance.o: balance.c balance.h structs.h
+	$(CC) $(WARNING_FLAGS) -c -g balance.c
 
 clean:
 	rm -f $(EXE) *.o

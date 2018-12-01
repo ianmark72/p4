@@ -2,7 +2,7 @@
 #define STRUCTS_H
 
 typedef struct tuple {
-        int* address;
+        void* address;
         size_t length;
 } tuple;
 

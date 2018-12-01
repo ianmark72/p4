@@ -65,37 +65,37 @@ void rightleftcase(node* child, node* parent, node* grandparent) {
         rightrightcase(child, grandparent);
 }
 
-void balanceTree(node* rootNode) {
+void balanceTree(node* newNode, node* uncle, int path){
 	//Path 0 = left-left, 1 = left-right, 2 = right-left, 3 = right-right 
 
-    //  Case : A 
-    //coloring needed
+	//Check if uncle exists.
+	if(uncle != NULL) {
+		if(uncle->color == 0) {
+			//Uncle is black
+			switch(path) {
+			case 0:
+				leftleftcase(newNode->parent, newNode->parent->parent);
+				break;
+			case 1:
+				leftrightcase(newNode, newNode->parent, newNode->parent->parent);
+				break;
+			case 2:
+				rightleftcase(newNode, newNode->parent, newNode->parent->parent);
+				break;
+			case 3:
+				rightrightcase(newNode->parent, newNode->parent->parent);
+				break;
+			}
+		}else{
+			//Uncle is red
+			if(newNode->parent->color == 1){
+				newNode->parent->color = 0;
+			}	
+			uncle->color = 0;
 
-        /* Case : 1 
-               The uncle of pt is also red 
-               Only Recoloring required */
-
-        /*  Case : 2 
-                The uncle of pt is also red 
-                Only Recoloring required */
-
-        
-
-    /* Case : B 
-           //Rotation needed
-        
-        /* Case : 1 
-                   pt is left child of its parent 
-                   Right-rotation required */
-        /* Case : 2 
-                   pt is left child of its parent 
-                   Right-rotation required */
-        
-         /* Case : 3 
-                   pt is right child of its parent 
-                   Left-rotation required */
-         /* Case : 4 
-                   pt is right child of its parent 
-                   Left-rotation required */
-
+			// if(newNode->parent->parent != rootNode) {
+			// 	newNode->parent->parent->color = 1; 
+			// }
+		}
+	}
 }
