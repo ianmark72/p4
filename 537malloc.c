@@ -23,13 +23,53 @@ void * malloc537(size_t size) {
 		return tuple->address;
 }
 
+static node* findNode(void* ptr, node* node) {
+	struct node* matchingNode = NULL;
+
+	if(ptr == node->tuple->address) {
+		matchingNode = node;
+	}else{
+		if(node->left != NULL) {
+			matchingNode = findNode(ptr, node->left);
+			if(matchingNode != NULL) {
+				return matchingNode;
+			}
+		}
+		if(node->right != NULL) {
+			matchingNode = findNode(ptr, node->right);
+			if(matchingNode != NULL) {
+				return matchingNode;
+			}
+		}
+	}
+
+	return matchingNode;
+}
+
 void free537(void *ptr) {
-	
+	node* node = NULL;
+
+	if(root != NULL) {
+		node = findNode(ptr, root);
+		if(node == NULL) {
+			printf("Error: memory was not allocated by malloc537.\n");
+			exit(-1);
+		}
+	} else {
+		printf("Error: nothing has been allocated yet.\n");
+		exit(-1);
+	}
+
+	if(node->status == 0) {
+		printf("Error: memory has already been freed.\n");
+		exit(-1);
+	}
+
 	free(ptr);
 }
 
 void memcheck537(void *ptr, size_t size) {
-
+	
 }
 
 void * realloc537(void *ptr, size_t size) {
