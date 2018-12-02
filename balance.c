@@ -87,8 +87,7 @@ void balanceTree(node* newNode, int path){
         //         printf("Parent is not null, and color is %i \n",newNode->parent->color);
         // }
         // printf("+++++++++++++++++++++++++++++++++++++++\n");
-        struct node* c = newNode;
-        while(c->parent != NULL && c->parent->color == 1) {
+        while(newNode->parent != NULL && newNode->parent->color == 1) {
 	//Check if uncle exists.
                 struct node* uncle;
                 if(newNode->parent == newNode->parent->parent->left){
@@ -104,7 +103,7 @@ void balanceTree(node* newNode, int path){
 				uncle->color = 0;
 				newNode->parent->color = 0;
 				newNode->parent->parent->color = 1;
-				c = c->parent->parent;
+				newNode = newNode->parent->parent;
                                 printf("Case: Recoloring ");
                                 printTuple(newNode->tuple);
 			}else{
