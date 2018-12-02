@@ -11,8 +11,8 @@ void * malloc537(size_t size) {
         tuple* tuple = malloc(sizeof(*tuple));
         tuple->address = malloc(size);
         tuple->length = size;
-		printf("New Tuple: ");
-		printf("%p \n",tuple->address);
+		printf("New ");
+		printTuple(tuple);
 		//printf("tuple created\n");
 		if(root != NULL) {
 			 addNode(root, tuple);
@@ -90,7 +90,9 @@ void * realloc537(void *ptr, size_t size) {
 
 	return NULL;
 }
- 
+ void printTuple(tuple* tuple) {
+	 printf("Tuple: (%ld,%p)\n",tuple->length,tuple->address);
+ }
 void printNode(node* node){ 
 	printf("========================================\n");
 	printf("Address: %p\n",node->tuple->address);
@@ -129,9 +131,11 @@ void printNode(node* node){
 int main() {
 	//printf("Start\n");
 	malloc537(40);
-	malloc537(40);
-	malloc537(40);
-//	malloc537(40);
+	malloc537(41);
+	malloc537(42);
+	malloc537(43);
+	malloc537(44);
+
 	
 	//Test Printing 
 	printNode(root);
