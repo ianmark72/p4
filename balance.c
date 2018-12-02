@@ -53,10 +53,16 @@ void rightrightcase(node* parent, node* grandparent) {
                 grandparent->parent = parent;
                 parent->parent = NULL;
         }
+	
+	if(parent->left != NULL) {
+		grandparent->right = parent->left;
+	}else{
+		grandparent->right = NULL;
+	}
+
 	parent->left = grandparent;
         parent->color = 0;
 
-	grandparent->right = NULL;
         grandparent->color = 1;
         }
 
