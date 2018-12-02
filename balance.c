@@ -26,6 +26,13 @@ void leftleftcase(node* parent, node* grandparent) {
 		grandparent->parent = parent;
 		parent->parent = NULL;
 	}
+
+	if(parent->right != NULL) {
+		grandparent->left = parent->right;
+	}else{
+		grandparent->left = NULL;
+	}
+
 	parent->right = grandparent;
         parent->color = 0;
 
@@ -37,6 +44,7 @@ void leftleftcase(node* parent, node* grandparent) {
 void leftrightcase(node* child, node* parent, node* grandparent) {
 	grandparent->left = child;
 	child->parent = grandparent;
+	child->left = parent;
 
 	parent->right = NULL;
 	parent->parent = child;
@@ -53,7 +61,7 @@ void rightrightcase(node* parent, node* grandparent) {
                 grandparent->parent = parent;
                 parent->parent = NULL;
         }
-	
+
 	if(parent->left != NULL) {
 		grandparent->right = parent->left;
 	}else{
@@ -69,6 +77,7 @@ void rightrightcase(node* parent, node* grandparent) {
 void rightleftcase(node* child, node* parent, node* grandparent) {
 	grandparent->right = child;
         child->parent = grandparent;
+	child->right = parent;
 
         parent->left = NULL;
         parent->parent = child;
