@@ -19,8 +19,11 @@ int checkSide(node* child, node* parent) {
 
 void leftleftcase(node* parent, node* grandparent) {
 	if(grandparent->parent != NULL) {
+		grandparent->parent->left = parent;
 		parent->parent = grandparent->parent;
+		grandparent->parent = parent;
 	}else{
+		grandparent->parent = parent;
 		parent->parent = NULL;
 	}
 	parent->right = grandparent;
