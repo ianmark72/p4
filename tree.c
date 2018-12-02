@@ -75,3 +75,36 @@ node* findRoot(node* node){
 	}
 	return node;
 }
+static node* findNode(void* ptr, node* node) {
+	struct node* matchingNode = NULL;
+
+	if(ptr == node->tuple->address) {
+		matchingNode = node;
+	}else{
+		if(node->left != NULL) {
+			matchingNode = findNode(ptr, node->left);
+			if(matchingNode != NULL) {
+				return matchingNode;
+			}
+		}
+		if(node->right != NULL) {
+			matchingNode = findNode(ptr, node->right);
+			if(matchingNode != NULL) {
+				return matchingNode;
+			}
+		}
+	}
+node* delete(node* node) {
+	
+	//if node is leaf, just delete node
+	if(node->left == NULL && node->right == NULL){
+		free(node);
+	}
+
+	//Node has one child. Copy child to node and delete child
+
+	//Node to be deleted has two children: Find inorder successor of the node. 
+	//Copy contents of the inorder successor to the node and delete the inorder successor. 
+	//Note that inorder predecessor can also be used.
+
+}
