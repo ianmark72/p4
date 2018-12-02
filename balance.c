@@ -43,6 +43,7 @@ void leftrightcase(node* child, node* parent, node* grandparent) {
 
 void rightrightcase(node* parent, node* grandparent) {     
 	if(grandparent->parent != NULL) {
+		grandparent->parent->right = parent;
                 parent->parent = grandparent->parent;
                 grandparent->parent = parent;
         }else{
