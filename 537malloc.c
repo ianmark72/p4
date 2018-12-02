@@ -101,19 +101,22 @@ void printNode(node* node){
 	printf("Status: %i\n", node->status);
 
 	if(node->parent != NULL){
-		printf("Parent's Address: %p\n", node->parent->tuple->address);
+		printf("Parent ");
+		printTuple(node->parent->tuple);
 	}
 	else {
 		printf("Parent's Address: NULL\n");
 	}
 	if(node->left != NULL) {
-		printf("Left Address: %p\n", node->left->tuple->address);
+		printf("Left ");
+		printTuple(node->left->tuple);
 	}
 	else {
                 printf("Left Address: NULL\n");
         }
 	if(node->right != NULL) {
-		printf("Right Address: %p\n", node->right->tuple->address);
+		printf("Right ");
+		printTuple(node->right->tuple);
 	}
 	else {
                 printf("Right Address: NULL\n");
@@ -138,7 +141,6 @@ int main() {
 	//malloc537(45);
 	//malloc537(46);
 	//malloc537(47);
-
 
 	
 	//Test Printing 
