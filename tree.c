@@ -100,9 +100,8 @@ node* delete(node* node) {
 	if(node->left == NULL && node->right == NULL){
 		free(node);
 	}
-
 	//Node has one child. Copy child to node and delete child
-
+	if()
 	//Node to be deleted has two children: Find inorder successor of the node. 
 	//Copy contents of the inorder successor to the node and delete the inorder successor. 
 	//Note that inorder predecessor can also be used.
