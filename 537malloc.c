@@ -131,10 +131,14 @@ void printNode(node* node){
 int main() {
 	//printf("Start\n");
 	malloc537(40);
+	malloc537(39);
 	malloc537(41);
-	malloc537(42);
-	malloc537(43);
-	malloc537(44);
+	malloc537(37);
+	malloc537(38);
+	//malloc537(45);
+	//malloc537(46);
+	//malloc537(47);
+
 
 	
 	//Test Printing 
