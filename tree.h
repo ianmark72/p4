@@ -7,6 +7,8 @@
 
 node* addNode(node* node, struct tuple* tuple);
 node* findRoot(node* node);
+node* maxValue(node* node);
+node* deleteNode(node* node);
 
 #endif /* TREE_H */
 

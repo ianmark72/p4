@@ -64,7 +64,6 @@ void free537(void *ptr) {
 		printf("Error: memory has already been freed.\n");
 		exit(-1);
 	}
-
 	free(ptr);
 }
 

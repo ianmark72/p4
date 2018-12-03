@@ -75,35 +75,72 @@ node* findRoot(node* node){
 	}
 	return node;
 }
-static node* findNode(void* ptr, node* node) {
-	struct node* matchingNode = NULL;
 
-	if(ptr == node->tuple->address) {
-		matchingNode = node;
-	}else{
-		if(node->left != NULL) {
-			matchingNode = findNode(ptr, node->left);
-			if(matchingNode != NULL) {
-				return matchingNode;
-			}
-		}
-		if(node->right != NULL) {
-			matchingNode = findNode(ptr, node->right);
-			if(matchingNode != NULL) {
-				return matchingNode;
-			}
-		}
+node* maxValue(node* node){
+	struct node* curr = node;
+	while(curr->right != NULL){
+		curr = curr->right;
 	}
-node* delete(node* node) {
-	
+	return curr;
+}
+node* deleteNode(node* node) {
+	struct node* root = node;
+	while(root->parent != NULL){
+		root = root->parent;
+	}
 	//if node is leaf, just delete node
 	if(node->left == NULL && node->right == NULL){
+		if(node == node->parent->right){
+			node->parent->right = NULL;
+		} else {
+			node->parent->left = NULL;
+		}
 		free(node);
 	}
-	//Node has one child. Copy child to node and delete child
-	if()
+	//Node has one child. 
+	if((node->left != NULL && node->right ==NULL) || (node->left == NULL && node->right != NULL)){
+		if(node->left == NULL){
+			//set node parent equal to node child, and set child parent to be grandparent
+			if(node->parent->right == node){
+				//right side
+			node->right->parent = node->parent;
+			node->parent->right = node->right;
+			}
+			else {
+				node->right->parent = node->parent;
+				node->parent->left = node->right;
+			}
+			free(node->right);
+		} else {
+			//left side
+			if(node->parent->right == node){
+			node->left->parent = node->parent;
+			node->parent->right = node->left;
+			}
+			else {
+				node->left->parent = node->parent;
+				node->parent->left = node->left;
+			}
+			free(node->left);
+		}
+	}
 	//Node to be deleted has two children: Find inorder successor of the node. 
 	//Copy contents of the inorder successor to the node and delete the inorder successor. 
 	//Note that inorder predecessor can also be used.
-
+	if(node->left != NULL && node->right != NULL){
+		struct node* replacement = maxValue(node->left);
+		replacement->parent = node->parent;
+		node->left = NULL;
+		replacement->right = node->right;
+		if(node->parent->right == node){
+			node->parent->right = replacement;
+		} else {
+			node->parent->left = replacement;
+		}
+		free(node);
+	}
+	while(root->parent != NULL){
+		root = root->parent;
+	}
+	return root;
 }
