@@ -9,7 +9,8 @@ node* addNode(node* node, tuple* tuple) {
 	//Path 0 = left-left, 1 = left-right, 2 = right-left, 3 = right-right
 	struct node* newNode = calloc(1,sizeof(*node));
 	if(node != NULL) {
-		if(node->tuple->address > tuple->address) {
+		// MAKE SURE TO CHANGE BACK TO ADDRESS
+		if(node->tuple->length > tuple->length) {
 			//Left
 			if(node->left == NULL) {
 
@@ -21,7 +22,8 @@ node* addNode(node* node, tuple* tuple) {
 				node->left = newNode;
 				newNode->status = 1;
 				if (node->parent != NULL){
-					if(node->parent->tuple->address > node->tuple->address){
+					// MAKE SURE TO CHANGE BACK TO ADDRESS
+					if(node->parent->tuple->length > node->tuple->length){
 						balanceTree(newNode, 0);
 					}
 					else {
@@ -31,18 +33,20 @@ node* addNode(node* node, tuple* tuple) {
 			}else{
 				addNode(node->left, tuple);
 			}
-		}else if(node->tuple->address <= tuple->address) {
+			// MAKE SURE TO CHANGE BACK TO ADDRESS
+		}else if(node->tuple->length <= tuple->length) {
 			//Right
 			if(node->right == NULL) {
-                newNode->color = 1;
-                newNode->parent = node;
-                newNode->left = NULL;
-                newNode->right = NULL;
-                newNode->tuple = tuple;
-                node->right = newNode;
+                		newNode->color = 1;
+                		newNode->parent = node;
+                		newNode->left = NULL;
+                		newNode->right = NULL;
+                		newNode->tuple = tuple;
+                		node->right = newNode;
 				newNode->status = 1;
 				if (node->parent != NULL) {
-					if(node->parent->tuple->address > node->tuple->address){
+					// MAKE SURE TO CHANGE BACK TO ADDRESS
+					if(node->parent->tuple->length > node->tuple->length){
 						balanceTree(newNode, 1);
 						//printf("%p ",newNode->tuple->address);
 					}
