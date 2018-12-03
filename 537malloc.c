@@ -70,6 +70,7 @@ void free537(void *ptr) {
 	}
 
 	node->status = 0;
+	deleteNode(node);
 	free(ptr);
 }
 
@@ -161,19 +162,20 @@ void printNode(node* node){
 }
 
 int main() {
-	void * ptr;
+	void * ptr0;
+	void* ptr1;
+	void* ptr2;
+	void* ptr3;
+	void* ptr4;
 
 	//printf("Start\n");
-	malloc537(40);
-	malloc537(39);
-	ptr = malloc537(41);
-	malloc537(37);
-	malloc537(38);
-	//malloc537(45);
-	//malloc537(46);
-	//malloc537(47);
-
-	free537(ptr);
+	ptr1 = malloc537(40);
+	ptr0 = malloc537(39);
+	ptr2 = malloc537(41);
+	ptr3 = malloc537(42);
+	ptr4 = malloc537(43);
+	
+	free537(ptr3);
 
 	
 	//Test Printing 

@@ -89,8 +89,15 @@ node* maxValue(node* node){
 }
 node* deleteNode(node* node) {
 	struct node* root = node;
+	int side = -1; // 0 if left, 1 if right
 	while(root->parent != NULL){
 		root = root->parent;
+	}
+	//which side ???
+	if(node->parent->left == node) {
+		side = 0;
+	} else {
+		side = 1;
 	}
 	//if node is leaf, just delete node
 	if(node->left == NULL && node->right == NULL){
@@ -99,7 +106,6 @@ node* deleteNode(node* node) {
 		} else {
 			node->parent->left = NULL;
 		}
-		free(node);
 	}
 	//Node has one child. 
 	if((node->left != NULL && node->right ==NULL) || (node->left == NULL && node->right != NULL)){
@@ -114,7 +120,6 @@ node* deleteNode(node* node) {
 				node->right->parent = node->parent;
 				node->parent->left = node->right;
 			}
-			free(node->right);
 		} else {
 			//left side
 			if(node->parent->right == node){
@@ -125,7 +130,6 @@ node* deleteNode(node* node) {
 				node->left->parent = node->parent;
 				node->parent->left = node->left;
 			}
-			free(node->left);
 		}
 	}
 	//Node to be deleted has two children: Find inorder successor of the node. 
@@ -135,14 +139,31 @@ node* deleteNode(node* node) {
 		struct node* replacement = maxValue(node->left);
 		replacement->parent = node->parent;
 		node->left = NULL;
+		node->right->parent = replacement;
 		replacement->right = node->right;
 		if(node->parent->right == node){
 			node->parent->right = replacement;
 		} else {
 			node->parent->left = replacement;
 		}
-		free(node);
 	}
+	struct node* u;
+	if(node->left == NULL){
+		u = node->right;
+	} else {
+		u = node->left;
+	}
+	if(u->color == 1 || node->parent->color == 1){
+			if (side == 1) {
+				node->parent->right->color = 0;
+			} else {
+				node->parent->left->color = 1;
+			}
+		} 
+	if (u->color == 0 && node->parent->color == 0){
+		//while((u->color == 0 && u->parent)
+	}
+	free(node);
 	while(root->parent != NULL){
 		root = root->parent;
 	}
