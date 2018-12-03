@@ -26,7 +26,7 @@ void * malloc537(size_t size) {
 static node* findNode(void* ptr, node* node) {
 	struct node* matchingNode = NULL;
 
-	if(ptr == node->tuple->address) {
+	if(node->tuple->address <= ptr && (node->tuple->address + node->tuple->length) > ptr) {
 		matchingNode = node;
 	}else{
 		if(node->left != NULL) {
@@ -55,6 +55,10 @@ void free537(void *ptr) {
 			printf("Error: memory was not allocated by malloc537.\n");
 			exit(-1);
 		}
+		if(ptr != node->tuple->address) {
+			printf("Error: address is not the start of block of allocated memory.\n");
+			exit(-1);
+		}
 	} else {
 		printf("Error: nothing has been allocated yet.\n");
 		exit(-1);
@@ -65,27 +69,52 @@ void free537(void *ptr) {
 		exit(-1);
 	}
 
+	node->status = 0;
 	free(ptr);
 }
 
+static void checkNode(void *ptr, size_t size, node* node) {
+	if(ptr < node->tuple->address || ptr >= (node->tuple->address + node->tuple->length)) {
+		printf("Error: Memory allocated outside of range.\n");
+		exit(-1);
+	}
+
+	if(node->left != NULL) {
+		checkNode(ptr, size, node->left);
+	}
+	if(node->right != NULL) {
+		checkNode(ptr, size, node->right);
+	}
+}
+
 void memcheck537(void *ptr, size_t size) {
-	
+	checkNode(ptr, size, root);
 }
 
 void * realloc537(void *ptr, size_t size) {
-
+	node* node = NULL;
 
 	if(ptr == NULL){
+		//Not an error but worth reporting(piazza).
 		if(size == 0) {
-			malloc537(size);
-		}else{
-			free537(ptr);
+			printf("Warning: size equal to zero.\n");
 		}
+		malloc537(size);
 	}else {
-		tuple* tuple = malloc(sizeof(tuple));
+		if(size == 0) {
+			//Not an error but worth reporting(piazza).
+			printf("Warning: size equal to zero.\n");
+			free(ptr);
+		}else{
+			node = findNode(ptr, root);
+			int oldSize = node->tuple->length;
+			//Delete node
 
-		tuple->address = realloc(ptr, size);
-		tuple->length = size;
+			tuple* tuple = malloc(sizeof(tuple));
+
+			tuple->address = realloc(ptr, size);
+			tuple->length = size;
+		}
 	}
 
 	return NULL;
@@ -132,15 +161,19 @@ void printNode(node* node){
 }
 
 int main() {
+	void * ptr;
+
 	//printf("Start\n");
 	malloc537(40);
 	malloc537(39);
-	malloc537(41);
+	ptr = malloc537(41);
 	malloc537(37);
 	malloc537(38);
 	//malloc537(45);
 	//malloc537(46);
 	//malloc537(47);
+
+	free537(ptr);
 
 	
 	//Test Printing 
