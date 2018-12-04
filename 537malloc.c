@@ -81,6 +81,11 @@ void memcheck537(void *ptr, size_t size) {
 	//checkNode(ptr, size, root);
 	struct node* node = findNode(ptr, root);
 
+	if(node == NULL) {
+		printf("Error: Invalid memory address. Has not been malloc'd\n");
+		exit(-1);
+	}
+
 	if(ptr < node->tuple->address || (ptr + size) > (node->tuple->address + node->tuple->length)) {
 		printf("Error: Memory allocated outside of range.\n");
 		exit(-1);

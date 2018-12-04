@@ -328,58 +328,78 @@ node* deleteNode(node* node) {
 	while(root->parent != NULL){
 		root = root->parent;
 	}
-	//which side ???
-	if(node->parent->left == node) {
-		side = 0;
-	} else {
-		side = 1;
-	}
-	//if node is leaf, just delete node
-	if(node->left == NULL && node->right == NULL){
-		if(node == node->parent->right){
-			node->parent->right = NULL;
-		} else {
-			node->parent->left = NULL;
-		}
-	}
-	//Node has one child. 
-	if((node->left != NULL && node->right ==NULL) || (node->left == NULL && node->right != NULL)){
-		if(node->left == NULL){
-			//set node parent equal to node child, and set child parent to be grandparent
-			if(node->parent->right == node){
-				//right side
-			node->right->parent = node->parent;
-			node->parent->right = node->right;
-			}
-			else {
-				node->right->parent = node->parent;
-				node->parent->left = node->right;
-			}
-		} else {
-			//left side
-			if(node->parent->right == node){
-			node->left->parent = node->parent;
-			node->parent->right = node->left;
-			}
-			else {
-				node->left->parent = node->parent;
-				node->parent->left = node->left;
+
+	if(node == root) {
+		if(node->left == NULL && node->right == NULL) {
+			return NULL;
+		}else if(node->left != NULL && node->right != NULL) {
+			struct node* replace = maxValue(node->left);
+			replace->parent = NULL;
+			node->right->parent = replace;
+			replace->right = node->right;
+			return node->left;
+		}else{
+			if(node->left != NULL) {
+				node->left->parent = NULL;
+				return node->left;
+			}else{
+				node->right->parent = NULL;
+				return node->right;
 			}
 		}
-	}
-	//Node to be deleted has two children: Find inorder successor of the node. 
-	//Copy contents of the inorder successor to the node and delete the inorder successor. 
-	//Note that inorder predecessor can also be used.
-	if(node->left != NULL && node->right != NULL){
-		struct node* replacement = maxValue(node->left);
-		replacement->parent = node->parent;
-		node->left = NULL;
-		node->right->parent = replacement;
-		replacement->right = node->right;
-		if(node->parent->right == node){
-			node->parent->right = replacement;
+	}else{
+		//which side ???
+		if(node->parent->left == node) {
+			side = 0;
 		} else {
-			node->parent->left = replacement;
+			side = 1;
+		}
+		//if node is leaf, just delete node
+		if(node->left == NULL && node->right == NULL){
+			if(node == node->parent->right){
+				node->parent->right = NULL;
+			} else {
+				node->parent->left = NULL;
+			}
+		}
+		//Node has one child. 
+		if((node->left != NULL && node->right ==NULL) || (node->left == NULL && node->right != NULL)){
+			if(node->left == NULL){
+				//set node parent equal to node child, and set child parent to be grandparent
+				if(node->parent->right == node){
+					//right side
+					node->right->parent = node->parent;
+					node->parent->right = node->right;
+				}
+				else {
+					node->right->parent = node->parent;
+					node->parent->left = node->right;
+				}
+			} else {
+				//left side
+				if(node->parent->right == node){
+					node->left->parent = node->parent;
+					node->parent->right = node->left;
+				}
+				else {
+					node->left->parent = node->parent;
+					node->parent->left = node->left;
+				}
+			}
+		}
+		//Node to be deleted has two children: Find inorder successor of the node. 
+		//Copy contents of the inorder successor to the node and delete the inorder successor. 
+		//Note that inorder predecessor can also be used.
+		if(node->left != NULL && node->right != NULL){
+			struct node* replacement = maxValue(node->left);
+			replacement->parent = node->parent;
+			node->right->parent = replacement;
+			replacement->right = node->right;
+			if(node->parent->right == node){
+				node->parent->right = replacement;
+			} else {
+				node->parent->left = replacement;
+			}
 		}
 	}
 
