@@ -73,22 +73,14 @@ void free537(void *ptr) {
 	free(ptr);
 }
 
-static void checkNode(void *ptr, size_t size, node* node) {
-	if(ptr < node->tuple->address || ptr >= (node->tuple->address + node->tuple->length)) {
+void memcheck537(void *ptr, size_t size) {
+	//checkNode(ptr, size, root);
+	struct node* node = findNode(ptr, root);
+
+	if(ptr < node->tuple->address || (ptr + size) > (node->tuple->address + node->tuple->length)) {
 		printf("Error: Memory allocated outside of range.\n");
 		exit(-1);
 	}
-
-	if(node->left != NULL) {
-		checkNode(ptr, size, node->left);
-	}
-	if(node->right != NULL) {
-		checkNode(ptr, size, node->right);
-	}
-}
-
-void memcheck537(void *ptr, size_t size) {
-	checkNode(ptr, size, root);
 }
 
 void * realloc537(void *ptr, size_t size) {
