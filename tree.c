@@ -187,8 +187,9 @@ void doubleBlack(node* node) {
 					break;
 				case 1:
 					if(childL->color == 1) {
-						rlRotation(parent, sibling, childL);
-						doubleBlack(sibling);
+						rlRotation(parent, sibling, childL);					
+						childL->color = 0;
+						doubleBlack(childL);
 						return;
 					}else{
 						sibling->color = 1;
@@ -199,6 +200,7 @@ void doubleBlack(node* node) {
 				case 2:
 					if(childR->color == 1) {
 						rrRotation(parent, sibling, childL);
+						childR->color = 0;
 						doubleBlack(sibling);
 						return;
 					}else{
@@ -211,9 +213,15 @@ void doubleBlack(node* node) {
 					if(childR->color == 1) {
 						//Two children, right child is red
 						rrRotation(parent, sibling, childL);
+						childR->color = 0;
+						doubleBlack(sibling);
+						return;
 					}else if(childL->color == 1) {
 						//Two children, right is black but left is red
 						rlRotation(parent, sibling, childL);
+						childL->color = 0;
+						doubleBlack(childL);
+						return;
 					}else{
 						//Both children are black
 						sibling->color = 1;
@@ -258,6 +266,7 @@ void doubleBlack(node* node) {
 				case 1:
 					if(childL->color == 1) {
 						llRotation(parent, sibling, childR);
+						childL->color = 0;
 						doubleBlack(sibling);
 						return;
 					}else{
@@ -269,7 +278,8 @@ void doubleBlack(node* node) {
 				case 2:
 					if(childR->color == 1) {
 						lrRotation(parent, sibling, childR);
-						doubleBlack(sibling);
+						childR->color = 0;
+						doubleBlack(childR);
 						return;
 					}else{
 						sibling->color = 1;
@@ -281,9 +291,15 @@ void doubleBlack(node* node) {
 					if(childL->color == 1) {
 						//Two children, right child is red
 						llRotation(parent, sibling, childR);
+						childL->color = 0;
+						doubleBlack(sibling);
+						return;
 					}else if(childR->color == 1) {
 						//Two children, right is black but left is red
 						lrRotation(parent, sibling, childR);
+						childR->color = 0;
+						doubleBlack(childR);
+						return;
 					}else{
 						//Both children are black
 						sibling->color = 1;
@@ -307,6 +323,8 @@ void doubleBlack(node* node) {
 node* deleteNode(node* node) {
 	struct node* root = node;
 	int side = -1; // 0 if left, 1 if right
+	int uColor = 0;
+
 	while(root->parent != NULL){
 		root = root->parent;
 	}
@@ -368,18 +386,25 @@ node* deleteNode(node* node) {
 	struct node* u;
 	if(node->left == NULL){
 		u = node->right;
-	} else {
+	} else if(node->right == NULL) {
 		u = node->left;
 	}
-	if(u->color == 1 || node->color == 1){
+	
+	if(u == NULL) {
+		uColor = 0;
+	}else{
+		uColor = u->color;
+	}
+
+	if(uColor == 1 || node->color == 1){
 			if (side == 1) {
 				node->parent->right->color = 0;
 			} else {
 				node->parent->left->color = 1;
 			}
 		} 
-	if (u->color == 0 && node->color == 0){
-		doubleBlack(u);
+	if (uColor == 0 && node->color == 0){
+		doubleBlack(node);
 	}
 
 	free(node);

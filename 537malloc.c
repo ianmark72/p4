@@ -164,18 +164,18 @@ void printNode(node* node){
 int main() {
 	void * ptr0;
 	void* ptr1;
-	void* ptr2;
-	void* ptr3;
-	void* ptr4;
+	//void* ptr2;
+	//void* ptr3;
+	//void* ptr4;
 
 	//printf("Start\n");
 	ptr1 = malloc537(40);
 	ptr0 = malloc537(39);
-	ptr2 = malloc537(41);
-	ptr3 = malloc537(42);
-	ptr4 = malloc537(43);
+	//ptr2 = malloc537(41);
+	//ptr3 = malloc537(42);
+	//ptr4 = malloc537(43);
 	
-	free537(ptr3);
+	free537(ptr0);
 
 	
 	//Test Printing 
