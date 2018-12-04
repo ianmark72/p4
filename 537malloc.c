@@ -8,11 +8,14 @@ static node* root = NULL;
 
 void * malloc537(size_t size) {
 		//printf("inside malloc\n");
+		if(size == 0) {
+			printf("Warning: Allocating block of size 0\n");
+		}
         tuple* tuple = malloc(sizeof(*tuple));
         tuple->address = malloc(size);
         tuple->length = size;
-		printf("New ");
-		printTuple(tuple);
+		// printf("New ");
+		// printTuple(tuple);
 		//printf("tuple created\n");
 		if(root != NULL) {
 			 addNode(root, tuple);

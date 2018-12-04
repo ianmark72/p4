@@ -67,8 +67,8 @@ node* addNode(node* node, tuple* tuple) {
 		newNode->right = NULL;
 		newNode->tuple = tuple;
 		newNode->status = 1;
-		printf("ROOT: ");
-		printf("%p \n",newNode->tuple->address);
+		// printf("ROOT: ");
+		// printf("%p \n",newNode->tuple->address);
 	}
 	
 	return newNode;
