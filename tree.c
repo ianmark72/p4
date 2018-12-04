@@ -87,6 +87,223 @@ node* maxValue(node* node){
 	}
 	return curr;
 }
+
+void llRotation(node* parent, node* sibling, node* childR) {
+	parent->parent = sibling;
+	sibling->parent = NULL;
+
+	if(childR != NULL) {
+		parent->left = childR;
+		childR->parent = parent;
+	}else{
+		parent->left = NULL;
+	}
+
+	//siblings->left = parent;
+	//childL->color = 0;
+}
+
+void lrRotation(node* parent, node* sibling, node* childR) {
+	parent->left = childR;
+	childR->parent = parent;
+
+	childR->left = sibling;
+	sibling->parent = childR;
+
+	//childR->color = 0;
+	//sibling->color = 1;
+
+	llRotation(parent, childR, sibling);
+}
+
+void rrRotation(node* parent, node* sibling, node* childL) {
+	parent->parent = sibling;
+	sibling->parent = NULL;
+
+	if(childL != NULL) {
+		parent->right = childL;
+		childL->parent = parent;
+	}else{
+		parent->right = NULL;
+	}
+
+	//siblings->left = parent;
+	//childR->color = 0;
+}
+
+void rlRotation(node* parent, node* sibling, node* childL) {
+	parent->right = childL;
+	childL->parent = parent;
+
+	childL->right = sibling;
+	sibling->parent = childL;
+
+	//childL->color = 0;
+	//sibling->color = 1;
+
+	rrRotation(parent, childL, sibling);
+}
+
+void doubleBlack(node* node) {
+	if(node->parent == NULL) {
+		node->color = 0;
+		return;
+	}
+
+	int side = checkSide(node, node->parent);
+
+	struct node* parent = node->parent;
+	struct node* sibling;
+	struct node* childL;
+	struct node* childR;
+	//0 = no children, 1 = left child only, 2 = right child only, 3 = both children
+	int children = 0;
+
+	//Get the parent, sibling, and its children
+	if(side == 0) {
+		if(parent->right != NULL) {
+			sibling	= node->parent->right;
+			if(sibling->left != NULL) {
+				childL = sibling->left;
+				children += 1;
+			}
+			if(sibling->right != NULL) {
+				childR = sibling->right;
+				children += 2;
+			}
+		}else{
+			doubleBlack(parent);
+			return;
+		}
+
+		if(sibling->color == 0) {
+			//Sibling is black
+			switch(children) {
+				case 0:
+					//No children exists
+					sibling->color = 1;
+					doubleBlack(parent);
+					return;
+					break;
+				case 1:
+					if(childL->color == 1) {
+						rlRotation(parent, sibling, childL);
+						doubleBlack(sibling);
+						return;
+					}else{
+						sibling->color = 1;
+						doubleBlack(parent);
+						return;
+					}
+					break;
+				case 2:
+					if(childR->color == 1) {
+						rrRotation(parent, sibling, childL);
+						doubleBlack(sibling);
+						return;
+					}else{
+						sibling->color = 1;
+						doubleBlack(parent);
+						return;
+					}
+					break;
+				case 3:
+					if(childR->color == 1) {
+						//Two children, right child is red
+						rrRotation(parent, sibling, childL);
+					}else if(childL->color == 1) {
+						//Two children, right is black but left is red
+						rlRotation(parent, sibling, childL);
+					}else{
+						//Both children are black
+						sibling->color = 1;
+						doubleBlack(parent);
+						return;
+					}
+					break;
+				}
+		} else {
+			//Sibling is red
+			parent->color = 1;
+			sibling->color = 0;
+			rrRotation(parent, sibling, childL);
+			doubleBlack(node);
+			return;	
+		}
+	} else {
+		if(parent->left != NULL) {
+			sibling	= node->parent->left;
+			if(sibling->left != NULL) {
+				childL = sibling->left;
+				children += 1;
+			}
+			if(sibling->right != NULL) {
+				childR = sibling->right;
+				children += 2;
+			}
+		}else{
+			doubleBlack(parent);
+			return;
+		}
+
+		if(sibling->color == 0) {
+			//Sibling is black
+			switch(children) {
+				case 0:
+					//No children exists
+					sibling->color = 1;
+					doubleBlack(parent);
+					return;
+					break;
+				case 1:
+					if(childL->color == 1) {
+						llRotation(parent, sibling, childR);
+						doubleBlack(sibling);
+						return;
+					}else{
+						sibling->color = 1;
+						doubleBlack(parent);
+						return;
+					}
+					break;
+				case 2:
+					if(childR->color == 1) {
+						lrRotation(parent, sibling, childR);
+						doubleBlack(sibling);
+						return;
+					}else{
+						sibling->color = 1;
+						doubleBlack(parent);
+						return;
+					}
+					break;
+				case 3:
+					if(childL->color == 1) {
+						//Two children, right child is red
+						llRotation(parent, sibling, childR);
+					}else if(childR->color == 1) {
+						//Two children, right is black but left is red
+						lrRotation(parent, sibling, childR);
+					}else{
+						//Both children are black
+						sibling->color = 1;
+						doubleBlack(parent);
+						return;
+					}
+					break;
+				}
+		} else {
+			//Sibling is red
+			parent->color = 1;
+			sibling->color = 0;
+			llRotation(parent, sibling, childR);
+			doubleBlack(node);
+			return;	
+		}		
+	}
+
+}
+
 node* deleteNode(node* node) {
 	struct node* root = node;
 	int side = -1; // 0 if left, 1 if right
@@ -147,22 +364,24 @@ node* deleteNode(node* node) {
 			node->parent->left = replacement;
 		}
 	}
+
 	struct node* u;
 	if(node->left == NULL){
 		u = node->right;
 	} else {
 		u = node->left;
 	}
-	if(u->color == 1 || node->parent->color == 1){
+	if(u->color == 1 || node->color == 1){
 			if (side == 1) {
 				node->parent->right->color = 0;
 			} else {
 				node->parent->left->color = 1;
 			}
 		} 
-	if (u->color == 0 && node->parent->color == 0){
-		//while((u->color == 0 && u->parent)
+	if (u->color == 0 && node->color == 0){
+		doubleBlack(u);
 	}
+
 	free(node);
 	while(root->parent != NULL){
 		root = root->parent;
