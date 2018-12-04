@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 #include "tree.h"
 #include "structs.h"
 
 static node* root = NULL;
 
 void * malloc537(size_t size) {
+	// if malloc returns an address of a freed node, delete the free node 
+	// mallocs return, if that malloc return overlaps with a free node, we need to delete 
 		//printf("inside malloc\n");
 		if(size == 0) {
 			printf("Warning: Allocating block of size 0\n");
@@ -108,7 +109,7 @@ void * realloc537(void *ptr, size_t size) {
 				printf("Error: realloc not at the start of a allocation");
 				exit(-1);
 			}
-			
+//two ways: one: update node if adress doesnt change or delete and make new Two: always delete and make new			
 			root = deleteNode(node);
 
 			tuple->address = realloc(ptr, size);
