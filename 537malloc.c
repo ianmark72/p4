@@ -4,29 +4,6 @@
 #include "structs.h"
 
 static node* root = NULL;
-
-void * malloc537(size_t size) {
-	// if malloc returns an address of a freed node, delete the free node 
-	// mallocs return, if that malloc return overlaps with a free node, we need to delete 
-		//printf("inside malloc\n");
-		if(size == 0) {
-			printf("Warning: Allocating block of size 0\n");
-		}
-        tuple* tuple = malloc(sizeof(*tuple));
-        tuple->address = malloc(size);
-        tuple->length = size;
-		// printf("New ");
-		// printTuple(tuple);
-		//printf("tuple created\n");
-		if(root != NULL) {
-			 addNode(root, tuple);
-		}else{
-			root = addNode(NULL, tuple);
-		}
-		root = findRoot(root);
-		return tuple->address;
-}
-
 static node* findNode(void* ptr, node* node) {
 	struct node* matchingNode = NULL;
 
@@ -48,6 +25,30 @@ static node* findNode(void* ptr, node* node) {
 	}
 
 	return matchingNode;
+}
+void * malloc537(size_t size) {
+	// if malloc returns an address of a freed node, delete the free node 
+	// mallocs return, if that malloc return overlaps with a free node, we need to delete 
+		//printf("inside malloc\n");
+		if(size == 0) {
+			printf("Warning: Allocating block of size 0\n");
+		}
+        tuple* tuple = malloc(sizeof(*tuple));
+        tuple->address = malloc(size);
+        tuple->length = size;
+		// printf("New ");
+		// printTuple(tuple);
+		struct node* match = findNode(tuple->adress, root);
+		if(match != NULL){
+			deleteNode(match);
+		}
+		if(root != NULL) {
+			 addNode(root, tuple);
+		}else{
+			root = addNode(NULL, tuple);
+		}
+		root = findRoot(root);
+		return tuple->address;
 }
 
 void free537(void *ptr) {
@@ -80,11 +81,6 @@ void free537(void *ptr) {
 void memcheck537(void *ptr, size_t size) {
 	//checkNode(ptr, size, root);
 	struct node* node = findNode(ptr, root);
-
-	if(node == NULL) {
-		printf("Error: Invalid memory address. Has not been malloc'd\n");
-		exit(-1);
-	}
 
 	if(ptr < node->tuple->address || (ptr + size) > (node->tuple->address + node->tuple->length)) {
 		printf("Error: Memory allocated outside of range.\n");
