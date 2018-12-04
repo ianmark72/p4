@@ -88,31 +88,41 @@ void memcheck537(void *ptr, size_t size) {
 
 void * realloc537(void *ptr, size_t size) {
 	node* node = NULL;
+	tuple* tuple = malloc(sizeof(tuple));
 
 	if(ptr == NULL){
-		//Not an error but worth reporting(piazza).
-		if(size == 0) {
-			printf("Warning: size equal to zero.\n");
-		}
-		malloc537(size);
+		tuple->address = malloc537(size);
 	}else {
 		if(size == 0) {
 			//Not an error but worth reporting(piazza).
 			printf("Warning: size equal to zero.\n");
 			free(ptr);
+			ptr = NULL;
 		}else{
 			node = findNode(ptr, root);
-			int oldSize = node->tuple->length;
-			//Delete node
-
-			tuple* tuple = malloc(sizeof(tuple));
+			if(node->status == 0) {
+					printf("Error: memory has already been freed");
+					exit(-1);
+			}
+			if(ptr != node->tuple->address) {
+				printf("Error: realloc not at the start of a allocation");
+				exit(-1);
+			}
+			
+			root = deleteNode(node);
 
 			tuple->address = realloc(ptr, size);
 			tuple->length = size;
+			if(root != NULL) {
+				addNode(root, tuple);
+			}else{
+				root = addNode(NULL, tuple);
+			}
+			root = findRoot(root);
 		}
 	}
 
-	return NULL;
+	return tuple->address;
 }
  void printTuple(tuple* tuple) {
 	 printf("Tuple: (%ld,%p)\n",tuple->length,tuple->address);
