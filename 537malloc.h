@@ -9,6 +9,5 @@ void memcheck537(void *ptr, size_t size);
 void * realloc537(void *ptr, size_t size);
 void printTuple(tuple* tuple);
 void printNode(node* node);
-int main();
 
 #endif /* MALLOC_H */

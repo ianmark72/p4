@@ -10,7 +10,7 @@ node* addNode(node* node, tuple* tuple) {
 	struct node* newNode = calloc(1,sizeof(*node));
 	if(node != NULL) {
 		// MAKE SURE TO CHANGE BACK TO ADDRESS
-		if(node->tuple->length > tuple->length) {
+		if(node->tuple->address > tuple->address) {
 			//Left
 			if(node->left == NULL) {
 
@@ -23,7 +23,7 @@ node* addNode(node* node, tuple* tuple) {
 				newNode->status = 1;
 				if (node->parent != NULL){
 					// MAKE SURE TO CHANGE BACK TO ADDRESS
-					if(node->parent->tuple->length > node->tuple->length){
+					if(node->parent->tuple->address > node->tuple->address){
 						balanceTree(newNode, 0);
 					}
 					else {
@@ -34,7 +34,7 @@ node* addNode(node* node, tuple* tuple) {
 				addNode(node->left, tuple);
 			}
 			// MAKE SURE TO CHANGE BACK TO ADDRESS
-		}else if(node->tuple->length <= tuple->length) {
+		}else if(node->tuple->address <= tuple->address) {
 			//Right
 			if(node->right == NULL) {
                 		newNode->color = 1;
@@ -46,7 +46,7 @@ node* addNode(node* node, tuple* tuple) {
 				newNode->status = 1;
 				if (node->parent != NULL) {
 					// MAKE SURE TO CHANGE BACK TO ADDRESS
-					if(node->parent->tuple->length > node->tuple->length){
+					if(node->parent->tuple->address > node->tuple->address){
 						balanceTree(newNode, 1);
 						//printf("%p ",newNode->tuple->address);
 					}
@@ -397,12 +397,14 @@ node* deleteNode(node* node) {
 	}
 
 	if(uColor == 1 || node->color == 1){
+		if(u != NULL) {
 			if (side == 1) {
 				node->parent->right->color = 0;
 			} else {
 				node->parent->left->color = 1;
 			}
 		} 
+	}
 	if (uColor == 0 && node->color == 0){
 		doubleBlack(node);
 	}
