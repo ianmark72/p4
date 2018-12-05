@@ -4,10 +4,11 @@
 #include "structs.h"
 
 static node* root = NULL;
+
 static node* findNode(void* ptr, node* node) {
 	struct node* matchingNode = NULL;
 
-	if(node->tuple->address <= ptr && (node->tuple->address + node->tuple->length) > ptr) {
+	if((node->tuple->address <= ptr && (node->tuple->address + node->tuple->length) > ptr)) {
 		matchingNode = node;
 	}else{
 		if(node->left != NULL && node->tuple->address > ptr ) {
@@ -26,10 +27,43 @@ static node* findNode(void* ptr, node* node) {
 
 	return matchingNode;
 }
+
+//(node->tuple->address <= ptr && (node->tuple->address + node->tuple->length) > ptr) || (node->tuple->address <= (ptr + size) && (node->tuple->address + node->tuple->length) > (ptr + size))
+
+static int findNodeRange(void* ptr, size_t size, node* node) {
+	int found = 0;
+	//FIX NEWLINE
+
+	if(ptr <= node->tuple->address && node->tuple->address < (ptr + size) ) {
+		root = deleteNode(node);
+		return 1;
+	}else if(ptr > node->tuple->address && ptr < (node->tuple->address + node->tuple->length)) {
+		node->tuple->length = ptr - node->tuple->address;
+		return 1;
+	}else{
+		if(node->left != NULL && node->tuple->address > ptr ) {
+			found = findNodeRange(ptr, size, node->left);
+			if(found == 1) {
+				return 1;
+			}
+		}
+		if(node->right != NULL && node->tuple->address < ptr) {
+			found = findNodeRange(ptr, size, node->right);
+			if(found == 1) {
+				return 1;
+			}
+		}
+	}
+
+	return found;
+}
+
 void * malloc537(size_t size) {
 	// if malloc returns an address of a freed node, delete the free node 
 	// mallocs return, if that malloc return overlaps with a free node, we need to delete 
 		//printf("inside malloc\n");
+		int found = 1;
+
 		if(size == 0) {
 			printf("Warning: Allocating block of size 0\n");
 		}
@@ -39,9 +73,8 @@ void * malloc537(size_t size) {
 		// printf("New ");
 		// printTuple(tuple);
 		if(root != NULL) {
-		struct node* match = findNode(tuple->address, root);
-			if(match != NULL){
-				deleteNode(match);
+			while(found == 1) {
+				found = findNodeRange(tuple->address, size, root);
 			}
 		}
 		if(root != NULL) {
@@ -92,6 +125,7 @@ void memcheck537(void *ptr, size_t size) {
 
 void * realloc537(void *ptr, size_t size) {
 	node* node = NULL;
+	int found = 0;
 	tuple* tuple = malloc(sizeof(tuple));
 
 	if(ptr == NULL){
@@ -109,15 +143,18 @@ void * realloc537(void *ptr, size_t size) {
 					exit(-1);
 			}
 			if(ptr != node->tuple->address) {
-				printf("Error: realloc not at the start of a allocation");
+				printf("Error: realloc not at the start of an allocation");
 				exit(-1);
 			}
-			
+
 			//two ways: one: update node if adress doesnt change or delete and make new Two: always delete and make new			
 			root = deleteNode(node);
 
 			tuple->address = realloc(ptr, size);
 			tuple->length = size;
+			while(found == 1) {
+				found = findNodeRange(tuple->address, size, root);
+			}
 			if(root != NULL) {
 				addNode(root, tuple);
 			}else{
