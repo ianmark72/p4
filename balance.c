@@ -86,22 +86,6 @@ void rightleftcase(node* child, node* parent, node* grandparent) {
 }
 
 void balanceTree(node* newNode, int path){
-	//Path 0 = left-left, 1 = left-right, 2 = right-left, 3 = right-right 
-        // int flag = -1;
-        // if (newNode->parent != NULL) {
-        //         flag = 1; // not null;
-        // } else {
-        //         flag = 0; // null
-        // }
-        // printf("+++++++++++++++++++++++++++++++++++++++\n");
-        // printf("Balance Loop Conditions: \n");
-        // printf("Node Address: %p \n",newNode->tuple->address);
-        // if(flag == 0) {
-        //         printf("Parent is null, and color is %i \n",newNode->parent->color);
-        // } else if(flag == 1){
-        //         printf("Parent is not null, and color is %i \n",newNode->parent->color);
-        // }
-        // printf("+++++++++++++++++++++++++++++++++++++++\n");
         while(newNode->parent != NULL && newNode->parent->color == 1) {
 	//Check if uncle exists.
                 struct node* uncle;
@@ -119,29 +103,19 @@ void balanceTree(node* newNode, int path){
 				newNode->parent->color = 0;
 				newNode->parent->parent->color = 1;
 				newNode = newNode->parent->parent;
-                                printf("Case: Recoloring ");
-                                printTuple(newNode->tuple);
 			}else{
 				//Uncle is black
 				switch(path) {
 				case 0:
-					printf("Case: Left Left ");
-					printTuple(newNode->tuple);
 					leftleftcase(newNode->parent, newNode->parent->parent);
 					break;
 				case 1:
-					printf("Case: Left Right ");
-					printTuple(newNode->tuple);
 					leftrightcase(newNode, newNode->parent, newNode->parent->parent);
 					break;
 				case 2:
-					printf("Case: Right Left ");
-					printTuple(newNode->tuple);
 					rightleftcase(newNode, newNode->parent, newNode->parent->parent);
 					break;
 				case 3:
-					printf("Case: Right Right ");
-					printTuple(newNode->tuple);
 					rightrightcase(newNode->parent, newNode->parent->parent);
 					break;
 				}
@@ -150,23 +124,15 @@ void balanceTree(node* newNode, int path){
                 	//Uncle is black
 			switch(path) {
 			case 0:
-                                printf("Case: Left Left ");
-                               printTuple(newNode->tuple);
 				leftleftcase(newNode->parent, newNode->parent->parent);
 				break;
 			case 1:
-                                printf("Case: Left Right ");
-                                printTuple(newNode->tuple);
 				leftrightcase(newNode, newNode->parent, newNode->parent->parent);
 				break;
 			case 2:
-                                printf("Case: Right Left ");
-                                printTuple(newNode->tuple);
 				rightleftcase(newNode, newNode->parent, newNode->parent->parent);
 				break;
 			case 3:
-                                printf("Case: Right Right ");
-                                printTuple(newNode->tuple);
 				rightrightcase(newNode->parent, newNode->parent->parent);
 				break;
 			}
