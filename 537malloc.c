@@ -10,13 +10,13 @@ static node* findNode(void* ptr, node* node) {
 	if(node->tuple->address <= ptr && (node->tuple->address + node->tuple->length) > ptr) {
 		matchingNode = node;
 	}else{
-		if(node->left != NULL) {
+		if(node->left != NULL && node->tuple->address > ptr ) {
 			matchingNode = findNode(ptr, node->left);
 			if(matchingNode != NULL) {
 				return matchingNode;
 			}
 		}
-		if(node->right != NULL) {
+		if(node->right != NULL && node->tuple->address < ptr) {
 			matchingNode = findNode(ptr, node->right);
 			if(matchingNode != NULL) {
 				return matchingNode;
@@ -38,9 +38,11 @@ void * malloc537(size_t size) {
         tuple->length = size;
 		// printf("New ");
 		// printTuple(tuple);
+		if(root != NULL) {
 		struct node* match = findNode(tuple->address, root);
-		if(match != NULL){
-			deleteNode(match);
+			if(match != NULL){
+				deleteNode(match);
+			}
 		}
 		if(root != NULL) {
 			 addNode(root, tuple);
@@ -110,7 +112,8 @@ void * realloc537(void *ptr, size_t size) {
 				printf("Error: realloc not at the start of a allocation");
 				exit(-1);
 			}
-//two ways: one: update node if adress doesnt change or delete and make new Two: always delete and make new			
+			
+			//two ways: one: update node if adress doesnt change or delete and make new Two: always delete and make new			
 			root = deleteNode(node);
 
 			tuple->address = realloc(ptr, size);
@@ -126,9 +129,11 @@ void * realloc537(void *ptr, size_t size) {
 
 	return tuple->address;
 }
- void printTuple(tuple* tuple) {
-	 printf("Tuple: (%ld,%p)\n",tuple->length,tuple->address);
- }
+
+void printTuple(tuple* tuple) {
+	printf("Tuple: (%ld,%p)\n",tuple->length,tuple->address);
+}
+
 void printNode(node* node){ 
 	printf("========================================\n");
 	printf("Address: %p\n",node->tuple->address);
