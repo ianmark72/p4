@@ -38,7 +38,7 @@ void * malloc537(size_t size) {
         tuple->length = size;
 		// printf("New ");
 		// printTuple(tuple);
-		struct node* match = findNode(tuple->adress, root);
+		struct node* match = findNode(tuple->address, root);
 		if(match != NULL){
 			deleteNode(match);
 		}
